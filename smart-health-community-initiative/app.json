@@ -8,7 +8,8 @@
     "scheme": "smarthealthcommunityinitiative",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.darianbyrne.smart-health-community-initiative"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,7 +21,7 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
