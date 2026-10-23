@@ -13,7 +13,7 @@
 | **Supervisor**         | Omer Ali                                                                                                          |
 | **Programme / Module** | BSc (Hons) in Software Development - Final Year Project                                                           |
 | **Academic Year**      | 2026-2027                                                                                                         |
-| **Meeting Schedule**   | Weekly, Friday 15:00-15:20                                                                                        |
+| **Meeting Schedule**   | Weekly, Tuesday 11:00-11:20                                                                                       |
 | **Repository**         | [DarianByrne/Smart-Health-Community-Initiative](https://github.com/DarianByrne/Smart-Health-Community-Initiative) |
 
 ---
