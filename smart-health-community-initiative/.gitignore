@@ -44,3 +44,6 @@ example
 
 # generated android builds
 build-*.apk
+
+*.env
+!*.env.example
