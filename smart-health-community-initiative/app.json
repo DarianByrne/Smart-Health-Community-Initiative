@@ -55,9 +55,13 @@
         "@appeeky/expo-healthkit",
         {
           "healthSharePermission": "Allow $(PRODUCT_NAME) to read your health data",
-          "healthConnectPermissions": ["READ_STEPS"]
+          "healthConnectPermissions": [
+            "READ_STEPS"
+          ]
         }
-      ]
+      ],
+      "expo-secure-store",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

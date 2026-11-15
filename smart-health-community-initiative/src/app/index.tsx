@@ -1,9 +1,12 @@
+import SignOutButton from "@/components/social-auth-buttons/sign-out-button";
+import { useAuthContext } from "@/hooks/use-auth-context";
 import { Button, Column, Host } from "@expo/ui";
 import { Stack, useRouter } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   const router = useRouter();
+  const { profile } = useAuthContext();
 
   return (
     <View style={styles.container}>
@@ -12,7 +15,9 @@ export default function Index() {
           title: "Smart Health Community Initiative",
         }}
       />
-      <Text>Edit src/app/index.tsx to edit this screen.</Text>
+      <Text>Welcome!</Text>
+      <Text>Display name: {profile?.display_name}</Text>
+      <SignOutButton />
       <Host matchContents>
         <Column>
           <Button
@@ -22,6 +27,10 @@ export default function Index() {
           <Button
             label="Go to Health example"
             onPress={() => router.navigate("/health-example")}
+          />
+          <Button
+            label="Go to missing route"
+            onPress={() => router.navigate("/thisisnotreal")}
           />
         </Column>
       </Host>

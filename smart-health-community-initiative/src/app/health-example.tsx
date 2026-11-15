@@ -1,8 +1,10 @@
+import { useAuthContext } from "@/hooks/use-auth-context";
 import {
   getStepsToday,
   HEALTH_PLATFORM,
   requestHealthAccess,
 } from "@/lib/health";
+import { supabase } from "@/lib/supabase";
 import HealthKit from "@appeeky/expo-healthkit";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -11,6 +13,7 @@ export default function Index() {
   const [steps, setSteps] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { claims } = useAuthContext();
 
   useEffect(() => {
     (async () => {
@@ -36,9 +39,33 @@ export default function Index() {
     })();
   }, []);
 
+  useEffect(() => {
+    const syncSteps = async () => {
+      if (steps <= 0) return;
+
+      console.debug(`health-example - syncing ${steps} steps`);
+
+      const { error } = await supabase.from("daily_activity").upsert(
+        {
+          user_id: claims?.sub,
+          activity_date: new Date(),
+          steps: steps,
+          source: "provider",
+          updated_at: new Date(),
+        },
+        { onConflict: "user_id, activity_date" },
+      );
+
+      if (error) {
+        console.error(`health-example - error: ${JSON.stringify(error)}`);
+      }
+    };
+
+    syncSteps();
+  }, [steps]);
+
   return (
     <View style={styles.container}>
-      <Text>Edit src/app/health-example.tsx to edit this screen.</Text>
       {loading ? (
         <Text>Loading...</Text>
       ) : error ? (
