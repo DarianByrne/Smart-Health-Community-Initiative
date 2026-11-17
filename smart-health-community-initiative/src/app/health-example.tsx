@@ -14,6 +14,13 @@ export default function Index() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { claims } = useAuthContext();
+  type userSteps = {
+    user_id: string;
+    activity_date: string;
+    steps: number;
+    display_name: string;
+  };
+  const [allUserStepsToday, setAllUserStepsToday] = useState<userSteps[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -61,7 +68,35 @@ export default function Index() {
       }
     };
 
+    const pullAllUserStepsToday = async () => {
+      const { data, error } = await supabase
+        .from("daily_activity")
+        .select(
+          `
+          user_id,
+          activity_date,
+          steps,
+          profiles ( display_name )
+          `,
+        )
+        .eq("activity_date", new Date());
+
+      if (data) {
+        setAllUserStepsToday(
+          data.map((elem) => {
+            return {
+              user_id: elem.user_id,
+              activity_date: elem.activity_date,
+              steps: elem.steps,
+              display_name: (elem.profiles as any).display_name, // TODO had to cast to any because typing isn't correct, should be object instead of array OR api should return an array not an object
+            };
+          }),
+        );
+      }
+    };
+
     syncSteps();
+    pullAllUserStepsToday();
   }, [steps]);
 
   return (
@@ -71,9 +106,17 @@ export default function Index() {
       ) : error ? (
         <Text>Error: {error}</Text>
       ) : (
-        <Text>
-          {steps} steps today from {HEALTH_PLATFORM}
-        </Text>
+        <>
+          <Text>
+            {steps} steps today from {HEALTH_PLATFORM}
+          </Text>
+          <Text>All user steps today</Text>
+          {allUserStepsToday.map(({ user_id, steps, display_name }) => (
+            <Text key={user_id}>
+              {display_name}: {steps}
+            </Text>
+          ))}
+        </>
       )}
     </View>
   );
